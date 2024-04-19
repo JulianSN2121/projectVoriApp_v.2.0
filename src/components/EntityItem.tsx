@@ -5,7 +5,6 @@ import {
     Text,
     Pressable
   } from "react-native";
-import { useNavigation } from '@react-navigation/native';
 import EntityPriceInfoWidget from "./EntityPriceInfoWidget";
 import LocationInfoWidget from "../components/LocationInfoWidget";
 import { colors, windowHeight } from "../../AppStyles";

@@ -8,8 +8,6 @@ import { useEffect, useState } from "react";
 import { _styles } from "../../AppStyles";
 import Header from "../components/Header";
 import EntityItem from "../components/EntityItem";
-import RestaurantsBanner from "../../../assets/categoryRestaurantsBanner.jpg";
-
 import { entityData } from "../services/apiClient";
 
 const styles = StyleSheet.create({
@@ -52,7 +50,7 @@ export default function CategoryEntitiesScreen({ navigation, route }) {
         <View style={styles.entitiesContainer}>
           <View>
             {filteredData.map((data) => (
-              <EntityItem key={data.id} data={data} onPress={() => navigation.navigate('EntityInfoScreen', { entityData: data })}/>
+              <EntityItem key={data.id} data={data} onPress={() => navigation.navigate('EntityInfoScreen', { entityData: data, key: index })}/>
             ))}
           </View>
         </View>

@@ -28,11 +28,6 @@ import NightclubsBanner from "../../assets/categoryNightclubsBanner.jpg";
 import OrganisationsBanner from "../../assets/categoryOrganisationsBanner.jpg";
 import RestaurantsBanner from "../../assets/categoryRestaurantsBanner.jpg";
 import Header from "../components/Header";
-import event1 from "../../../assets/events1.png";
-import event2 from "../../../assets/events2.png";
-import event3 from "../../../assets/events3.png";
-import event4 from "../../../assets/events4.png";
-import event5 from "../../../assets/events5.png";
 
 import { eventData } from "../services/apiClient";
 import { entityData } from "../services/apiClient";

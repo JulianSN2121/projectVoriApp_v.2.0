@@ -100,44 +100,7 @@ export default function AppNavigator() {
           tabBarActiveTintColor: "#ce1119",
           tabBarInactiveTintColor: "#ffffff",
         }}
-      />
-      {/* <Tab.Screen
-        name="Account"
-        component={AccountScreen}
-        options={{
-          tabBarLabel: "Konto",
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="account" color={color} size={size} />
-          ),
-          tabBarActiveTintColor: "#ce1119",
-          tabBarInactiveTintColor: "#ffffff",
-        }}
-      /> */}
-      {/* <Tab.Screen
-        name="Login"
-        component={LoginScreen}
-        options={{
-          tabBarLabel: "Login",
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="login" color={color} size={size} />
-          ),
-          tabBarActiveTintColor: "#ce1119",
-          tabBarInactiveTintColor: "#ffffff",
-        }}
-      />
-      <Tab.Screen
-        name="Registration"
-        component={RegistrationScreen}
-        options={{
-          tabBarLabel: "Registration",
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="login" color={color} size={size} />
-          ),
-          tabBarActiveTintColor: "#ce1119",
-          tabBarInactiveTintColor: "#ffffff",
-        }}
-      /> */}
-      
+      />    
     </Tab.Navigator>
   );
 }

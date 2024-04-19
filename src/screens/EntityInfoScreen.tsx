@@ -18,12 +18,12 @@ import Swiper from "react-native-swiper";
 import { _styles, colors, windowHeight, windowWidth } from "../../AppStyles";
 import Header from "../components/Header";
 import CallWidget from "../components/CallWidget";
-import OpeningStatusWidget from "../components/OpeningStatusWidget";
 import RouteWidget from "../components/RouteWidget";
 import WebsiteLinkWidget from "../components/WebsiteLinkWidget";
 import Restaurant from "../../assets/categoryRestaurantsBanner.jpg";
 import SocialMediaTabWidget from "../components/SocialMediaTabWidget";
 import EventItem from "../components/EventItem";
+import menu from "../../assets/menu.jpg";
 import event1 from "../../assets/events1.png";
 import event2 from "../../assets/events2.png";
 import event3 from "../../assets/events3.png";
@@ -34,35 +34,8 @@ const menuItems = {
   overview: "Übersicht",
   menu: "Menü",
   events: "Events",
-  // jobs: "Jobs",
-  // reviews: "Bewertungen",
 };
 
-const demoData = {
-    id: 1,
-    banner: "4e664158-9481-48ee-ad50-b596d504ff85",
-    name: "Restaurant 1",
-    entity_tag: ["restaurant"],
-    description:
-      "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore sanctus est Lorem ipsum dolor sit amet.",
-    postalcode: "6972",
-    street: "Gießenstraße",
-    housenumber: "38",
-    location: "Fußach",
-    phone_contact: "+43 660 5457491",
-    opening_hours_monday: "09:00 - 18:00",
-    opening_hours_tuesday: "10:00 - 18:00",
-    opening_hours_wednesday: "10:00 - 18:00",
-    opening_hours_thursday: "10:00 - 18:00",
-    opening_hours_friday: "10:00 - 18:00",
-    opening_hours_saturday: "10:00 - 18:00",
-    opening_hours_sunday: "09:00 - 18:00",
-    website_link: "www.google.com",
-    instagram_link: "www.instagram.com",
-    facebook_link: "www.facebook.com",
-    images: null,
-    menu: null,
-};
 const demoDataEvents = {
   1: {
     id: 1,
@@ -165,16 +138,15 @@ const demoDataEvents = {
     imageUrl: event5,
   },
 };
-const demDataJobs = {
-  
-}
 
 export default function EntityInfoScreen({ navigation, route }) {
   const [selectedTab, setSelectedTab] = useState("overview");
   const handleTabSelect = (tabKey) => {
     setSelectedTab(tabKey);
   }
-  const { entityData } = route.params;  
+  const { entityData } = route.params;
+  const { key } = route.params;
+  const selectedCategory = {key}
   
   return (
     <SafeAreaView style={_styles.safeAreaView}>
@@ -186,7 +158,6 @@ export default function EntityInfoScreen({ navigation, route }) {
             <Image style={styles.image} source={Restaurant}></Image>
             <View style={styles.widgetOverlayContainer}>
               <View style={styles.widgetOverlayContainer.left}>
-                <OpeningStatusWidget></OpeningStatusWidget>
               </View>
               <View style={styles.widgetOverlayContainer.right}>
                 <WebsiteLinkWidget websiteLink={entityData.website_link}></WebsiteLinkWidget>
@@ -204,7 +175,7 @@ export default function EntityInfoScreen({ navigation, route }) {
             {selectedTab === "overview" && (
               <OverviewTabContent data={entityData}></OverviewTabContent>
             )}
-            {selectedTab === "menu" && <MenuTabContent></MenuTabContent>}
+            {selectedTab === "menu" &&  <MenuTabContent></MenuTabContent>}
             {selectedTab === "events" && <EventsTabContent navigation={navigation}></EventsTabContent>}
           </View>
         </View>
@@ -397,8 +368,6 @@ function OverviewTabContent({ data }) {
 }
 
 function MenuTabContent() {
-  // const [gridItemWidth, setGridItemWidth] = useState(0);
-  // const [gridItemHeight, setGridItemHeight] = useState(0);
 
   const [isSliderVisible, setIsSliderVisible] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -407,12 +376,12 @@ function MenuTabContent() {
   const [loadedImagesCount, setLoadedImagesCount] = useState(0);
 
   const images = [
-    Restaurant,
-    Restaurant,
-    Restaurant,
-    Restaurant,
-    Restaurant,
-    Restaurant,
+    menu,
+    menu,
+    menu,
+    menu,
+    menu,
+    menu,
   ];
 
   const openSlider = (index) => {
@@ -433,14 +402,6 @@ function MenuTabContent() {
       setIsImagesLoading(false);
     }
   }, [loadedImagesCount]);
-  // const onParentLayout = (event) => {
-  //   const parentWidth = event.nativeEvent.layout.width;
-  //   const parentHeight = event.nativeEvent.layout.height;
-  //   const calculatedWidth = parentWidth * 0.5 - 20;
-  //   const calculatedHeight = parentHeight * 0.5 - 20;
-  //   setGridItemWidth(calculatedWidth);
-  //   setGridItemHeight(calculatedHeight);
-  // };
 
   return (
     <View style={styles.menuImageContainer} /*onLayout={onParentLayout}*/>
@@ -464,19 +425,6 @@ function MenuTabContent() {
           </View>
         </TouchableOpacity>
       ))}
-      {/* {images.map((image, index) => (
-        <TouchableOpacity key={index} onPress={() => openSlider(index)}>
-          <View
-            style={{
-              width: windowWidth*0.42,
-              height: windowHeight*0.15,
-              marginBottom: windowHeight * 0.02,
-            }}
-          >
-            <Image source={image} style={styles.image} />
-          </View>
-        </TouchableOpacity>
-      ))} */}
 
       <Modal visible={isSliderVisible} transparent={true}>
         <View style={styles1.modalContent}>
@@ -533,17 +481,11 @@ const styles1 = StyleSheet.create({
 function EventsTabContent({ navigation }) {
   return(
     <ScrollView>
-      {Object.values(demoDataEvents).map((data) => (
-          <EventItem key={data.id} data={data} onPress={() => navigation.navigate('EventInfoScreen', { eventData: data })}/>
-      ))}
+      <View style={{marginTop: 10}}>
+        {Object.values(demoDataEvents).map((data) => (
+            <EventItem key={data.id} data={data} onPress={() => navigation.navigate('EventInfoScreen', { eventData: data })}/>
+        ))}
+      </View>
       </ScrollView>
   )
-}
-
-function JobsTabContent( navigation ){
-<ScrollView>
-      {Object.values(demoDataEvents).map((data) => (
-          <EventItem key={data.id} data={data} onPress={() => navigation.navigate('EventInfoScreen', { eventData: data })}/>
-      ))}
-      </ScrollView>
 }
