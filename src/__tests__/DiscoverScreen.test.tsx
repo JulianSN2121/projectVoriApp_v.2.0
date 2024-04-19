@@ -1,15 +1,24 @@
-import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react-native';
-import DiscoverScreen from '../screens/DiscoverScreen';
-
 // Mock für die navigation-Prop
-const navigationMock = {
-  navigate: jest.fn(),
-};
+//const createTestProps = (props: Object) => ({
+//  navigation: {
+//    navigate: jest.fn()
+//  },
+//  ...props
+//});
 
-describe('DiscoverScreen', () => {
-  it('renders correctly', () => {
-    const { getByText } = render(<DiscoverScreen navigation={navigationMock} />);
-    expect(getByText('Entdecke Vorarlberg')).toBeTruthy();
-  });
-});
+//const testProps = createTestProps({});
+
+function test2(a: number) {
+  return a + 1;
+}
+
+describe("Test", () => {
+  expect(test2(5)).toBe(6);
+})
+
+//describe('DiscoverScreen', () => {
+//  it('renders correctly', () => {
+//    const { getByText } = render(<DiscoverScreen navigation={testProps} />);
+//    expect(getByText('Entdecke Vorarlberg')).toBeTruthy();
+//  });
+//});

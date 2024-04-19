@@ -388,7 +388,7 @@ export default function DiscoverScreen({ navigation }) {
   );
 }
 
-function CategoriesSlider({ navigation  }) {
+export function CategoriesSlider({ navigation  }) {
   const entries = Object.entries(categoriesTitles);
   return (
     <ScrollView
