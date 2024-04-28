@@ -18,9 +18,19 @@ const styles = StyleSheet.create({
 })
 
 export default function SocialMediaTabWidget({ title, link }) {
-    return (
-      <Pressable onPress={() => Linking.openURL("https://" + link)} style={styles.socialMediaTabWidget}>
-			  <Text style={styles.socialMediaTabWidgetTitle}>{title}</Text>
-		  </Pressable>
-    );
-  }
+  const openLink = () => {
+    if (title.toLowerCase() === 'facebook') {
+      Linking.openURL("https://" + link)
+    } else if (title.toLowerCase() === 'instagram') {
+      Linking.openURL('instagram://user?username=' + link);
+    } else {
+      Linking.openURL(link);
+    }
+  };
+
+  return (
+    <Pressable onPress={openLink} style={styles.socialMediaTabWidget}>
+      <Text style={styles.socialMediaTabWidgetTitle}>{title}</Text>
+    </Pressable>
+  );
+}

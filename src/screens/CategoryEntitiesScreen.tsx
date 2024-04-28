@@ -8,16 +8,14 @@ import { useEffect, useState } from "react";
 import { _styles } from "../../AppStyles";
 import Header from "../components/Header";
 import EntityItem from "../components/EntityItem";
-import { entityData } from "../services/apiClient";
+
+import { entitiesData } from "../data/entitiesData";
 
 const styles = StyleSheet.create({
   entitiesContainer: {
     flex: 1,
   },
 });
-function dataFilter(data, category){
-  return data.filter((item) => item.category.includes(category));
-}
 
 export default function CategoryEntitiesScreen({ navigation, route }) {
   const { categoryType } = route.params;
@@ -37,7 +35,7 @@ export default function CategoryEntitiesScreen({ navigation, route }) {
   useEffect(() => {
     const entityTag = entityTags[index] || "";
     const dataFilter = (data, category) => data.filter((item) => item.category.includes(category));
-    const filtered = dataFilter(entityData, entityTag);
+    const filtered = dataFilter(entitiesData, entityTag);
     setFilteredData(filtered);
   }, [index, categoryType]);
   
@@ -50,7 +48,7 @@ export default function CategoryEntitiesScreen({ navigation, route }) {
         <View style={styles.entitiesContainer}>
           <View>
             {filteredData.map((data) => (
-              <EntityItem key={data.id} data={data} onPress={() => navigation.navigate('EntityInfoScreen', { entityData: data, key: index })}/>
+              <EntityItem key={data.id} data={data} onPress={() => navigation.navigate('EntityInfoScreen', { entitiesData: data, key: index })}/>
             ))}
           </View>
         </View>

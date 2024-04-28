@@ -14,7 +14,8 @@ import EventImage from "../../assets/event.jpeg";
 import Logo from "../../assets/welcomeScreen_Logo.png";
 import { charUppercase } from "../utils/stringHelpers";
 import Header from "../components/Header";
-import { entityData } from "../services/apiClient";
+
+import { entitiesData } from "../data/entitiesData";
 
 const data = {};
 
@@ -125,9 +126,9 @@ export default function NewsScreen({ navigation }) {
   return (
     <SafeAreaView style={_styles.safeAreaView}>
       <ScrollView style={{ padding: 14 }}>
-        <FeedHeader></FeedHeader>
+        <Header title="News"></Header>
         {Object.entries(
-          dataFilter(entityData, ["restaurant", "bar", "nightclub"])
+          dataFilter(entitiesData, ["restaurant", "bar", "nightclub"])
         ).map(([key, data], index) => (
           <FeedItem
             navigation={navigation}
@@ -140,18 +141,6 @@ export default function NewsScreen({ navigation }) {
   );
 }
 
-function FeedHeader() {
-  return (
-    <View style={headerStyles.headerContainer}>
-      <View style={headerStyles.logoContainer}>
-        <Image style={headerStyles.logoContainer.logo} source={Logo}></Image>
-      </View>
-      <View style={headerStyles.titleContainer}>
-        <Text style={headerStyles.titleContainer.title}>News</Text>
-      </View>
-    </View>
-  );
-}
 
 function FeedItem({ data, navigation }) {
     const today = new Date();
@@ -162,7 +151,7 @@ function FeedItem({ data, navigation }) {
   return (
     <Pressable
       onPress={() => {
-        navigation.navigate("EntityInfoScreen", { entityData: data });
+        navigation.navigate("EntityInfoScreen", { entitiesData: data });
       }}
     >
         <View style={styles.newsItemContainer}>

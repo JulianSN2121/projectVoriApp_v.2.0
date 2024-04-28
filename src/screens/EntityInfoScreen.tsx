@@ -20,123 +20,15 @@ import Header from "../components/Header";
 import CallWidget from "../components/CallWidget";
 import RouteWidget from "../components/RouteWidget";
 import WebsiteLinkWidget from "../components/WebsiteLinkWidget";
-import Restaurant from "../../assets/categoryRestaurantsBanner.jpg";
 import SocialMediaTabWidget from "../components/SocialMediaTabWidget";
 import EventItem from "../components/EventItem";
-import menu from "../../assets/menu.jpg";
-import event1 from "../../assets/events1.png";
-import event2 from "../../assets/events2.png";
-import event3 from "../../assets/events3.png";
-import event4 from "../../assets/events4.png";
-import event5 from "../../assets/events5.png";
+
 
 const menuItems = {
   overview: "Übersicht",
   menu: "Menü",
+  images: "Bilder",
   events: "Events",
-};
-
-const demoDataEvents = {
-  1: {
-    id: 1,
-    name: "Event 1",
-    description: "Event 1 is great",
-    ticket_price: "30",
-    banner: "84c65e47-644d-4687-ac7d-4567ac9c7498",
-    start_date: "2024-01-04T15:06:00",
-    end_date: "2024-01-31T12:00:00",
-    imageUrl: event1,
-  },
-  2: {
-    id: 2,
-    name: "Event 2",
-    description: "Event 2 is great",
-    ticket_price: "30",
-    banner: "1f0b1d4f-805a-4e90-9419-80d8603a2dfa",
-    start_date: "2024-01-04T15:06:01",
-    end_date: "2024-01-31T12:00:01",
-    imageUrl: event2,
-  },
-  3: {
-    id: 3,
-    name: "Event 3",
-    description: "Event 3 is great",
-    ticket_price: "30",
-    banner: "f43d37c3-1b49-4eb8-b39e-b098d3ea0a87",
-    start_date: "2024-01-04T15:06:02",
-    end_date: "2024-01-31T12:00:02",
-    imageUrl: event3,
-  },
-  4: {
-    id: 4,
-    name: "Event 4",
-    description: "Event 4 is great",
-    ticket_price: "30",
-    banner: "f749cbb6-ab78-46cb-8edf-60a696d1e69a",
-    start_date: "2024-01-04T15:06:03",
-    end_date: "2024-01-31T12:00:03",
-    imageUrl: event4,
-  },
-  5: {
-    id: 5,
-    name: "Event 5",
-    description: "Event 5 is great",
-    ticket_price: "30",
-    banner: "d970125d-045e-4ad1-aee0-b1d2c59c9a6d",
-    start_date: "2024-01-04T15:06:04",
-    end_date: "2024-01-31T12:00:04",
-    imageUrl: event5,
-  },
-  6: {
-    id: 6,
-    name: "Event 6",
-    description: "Event 6 is great",
-    ticket_price: "30",
-    banner: "84c65e47-644d-4687-ac7d-4567ac9c7498",
-    start_date: "2024-01-04T15:06:05",
-    end_date: "2024-01-31T12:00:05",
-    imageUrl: event1,
-  },
-  7: {
-    id: 7,
-    name: "Event 7",
-    description: "Event 7 is great",
-    ticket_price: "30",
-    banner: "1f0b1d4f-805a-4e90-9419-80d8603a2dfa",
-    start_date: "2024-01-04T15:06:06",
-    end_date: "2024-01-31T12:00:06",
-    imageUrl: event2,
-  },
-  8: {
-    id: 8,
-    name: "Event 8",
-    description: "Event 8 is great",
-    ticket_price: "30",
-    banner: "f43d37c3-1b49-4eb8-b39e-b098d3ea0a87",
-    start_date: "2024-01-04T15:06:07",
-    end_date: "2024-01-31T12:00:07",
-    imageUrl: event3,
-  },
-  9: {
-    id: 9,
-    name: "Event 9",
-    description: "Event 9 is great",
-    ticket_price: "30",
-    banner: "f749cbb6-ab78-46cb-8edf-60a696d1e69a",
-    start_date: "2024-01-04T15:06:08",
-    end_date: "2024-01-31T12:00:08",
-    imageUrl: event4,
-  },
-  10: {
-    id: 10,
-    name: "Event 10",
-    description: "Event 10 is great",
-    ticket_price: "30",
-    banner: "d970125d-045e-4ad1-aee0-b1d2c59c9a6d",
-    start_date: "2024-01-04T15:06:09",
-    end_date: "2024-01-31T12:00:09",
-    imageUrl: event5,
-  },
 };
 
 export default function EntityInfoScreen({ navigation, route }) {
@@ -144,25 +36,24 @@ export default function EntityInfoScreen({ navigation, route }) {
   const handleTabSelect = (tabKey) => {
     setSelectedTab(tabKey);
   }
-  const { entityData } = route.params;
+  const { entitiesData } = route.params;
   const { key } = route.params;
-  const selectedCategory = {key}
   
   return (
     <SafeAreaView style={_styles.safeAreaView}>
       <ScrollView style={{ padding: 14 }}>
-        <Header title={entityData.name}></Header>
+        <Header title={entitiesData.name}></Header>
 
         <View style={styles.contentContainer}>
           <View style={styles.imageContainer}>
-            <Image style={styles.image} source={Restaurant}></Image>
+            <Image style={styles.image} source={entitiesData.banner}></Image>
             <View style={styles.widgetOverlayContainer}>
               <View style={styles.widgetOverlayContainer.left}>
               </View>
               <View style={styles.widgetOverlayContainer.right}>
-                <WebsiteLinkWidget websiteLink={entityData.website_link}></WebsiteLinkWidget>
-                <CallWidget phoneNumber={entityData.phone_contact}></CallWidget>
-                <RouteWidget address={[entityData.street, entityData.housenumber, entityData.postalcode]}></RouteWidget>
+                <WebsiteLinkWidget websiteLink={entitiesData.website_link}></WebsiteLinkWidget>
+                <CallWidget phoneNumber={entitiesData.phone_contact}></CallWidget>
+                <RouteWidget address={[entitiesData.street, entitiesData.housenumber, entitiesData.postalcode]}></RouteWidget>
               </View>
             </View>
           </View>
@@ -172,11 +63,10 @@ export default function EntityInfoScreen({ navigation, route }) {
           </View>
 
           <View style={styles.entityContentContainer}>
-            {selectedTab === "overview" && (
-              <OverviewTabContent data={entityData}></OverviewTabContent>
-            )}
-            {selectedTab === "menu" &&  <MenuTabContent></MenuTabContent>}
-            {selectedTab === "events" && <EventsTabContent navigation={navigation}></EventsTabContent>}
+            {selectedTab === "overview" && <OverviewTabContent data={entitiesData}></OverviewTabContent>}
+            {selectedTab === "menu" &&  <MenuTabContent data={entitiesData.menu}></MenuTabContent>}        
+            {selectedTab === "images" && <ImagesTabContent data={entitiesData.images}></ImagesTabContent>}
+            {selectedTab === "events" && <EventsTabContent navigation={navigation} data={entitiesData}></EventsTabContent>}
           </View>
         </View>
       </ScrollView>
@@ -262,13 +152,28 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   menuImageContainer: {
-    height: windowWidth * 0.5 - 20,
-    padding: 5,
+    marginTop: 10,
     display: "flex",
     flexWrap: "wrap",
     flexDirection: "row",
     alignContent: "space-between",
     justifyContent: "space-between",
+  },
+  noEventsContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  noEventsText: {
+    fontSize: 14,
+    color: colors.darkGrey,
+  },
+  noMenuContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  noMenuText: {
+    fontSize: 14,
+    color: colors.darkGrey,
   },
 });
 
@@ -367,22 +272,54 @@ function OverviewTabContent({ data }) {
   );
 }
 
-function MenuTabContent() {
 
+function ImagesTabContent({ data }) {
+  return(
+    <ImageRender data={data}></ImageRender>
+  )
+}
+
+function MenuTabContent({ data }) {
+  return(
+    <ImageRender data={data}></ImageRender>
+  )
+}
+
+function EventsTabContent({ navigation, data }) {
+
+  const events = [data.events];
+
+  return (
+    <ScrollView>
+      <View style={{ marginTop: 10 }}>
+        {events[0] && events[0].length > 0 ? (
+          events[0].map((data) => (
+            <EventItem
+              key={data.id}
+              data={data}
+              onPress={() =>
+                navigation.navigate('EventInfoScreen', { eventsData: data })
+              }
+            />
+          ))
+        ) : (
+          <View style={styles.noEventsContainer}>
+            <Text style={styles.noEventsText}>No events found</Text>
+          </View>
+        )}
+      </View>
+    </ScrollView>
+  );
+}
+
+function ImageRender({ data }) {
   const [isSliderVisible, setIsSliderVisible] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
   const [isImagesLoading, setIsImagesLoading] = useState(true);
   const [loadedImagesCount, setLoadedImagesCount] = useState(0);
 
-  const images = [
-    menu,
-    menu,
-    menu,
-    menu,
-    menu,
-    menu,
-  ];
+  const images = data || [];
 
   const openSlider = (index) => {
     setSelectedImageIndex(index);
@@ -404,43 +341,53 @@ function MenuTabContent() {
   }, [loadedImagesCount]);
 
   return (
-    <View style={styles.menuImageContainer} /*onLayout={onParentLayout}*/>
-      {isImagesLoading && (
-        <ActivityIndicator
-          size="large"
-          color="#0000ff"
-          style={styles.spinnerStyle}
-        />
-      )}
-      {images.map((image, index) => (
-        <TouchableOpacity key={index} onPress={() => openSlider(index)}>
-          <View
-            style={{
-              width: windowWidth * 0.42,
-              height: windowHeight * 0.15,
-              marginBottom: windowHeight * 0.02,
-            }}
-          >
-            <Image source={image} style={styles.image} onLoad={onImageLoad} />
-          </View>
-        </TouchableOpacity>
-      ))}
-
-      <Modal visible={isSliderVisible} transparent={true}>
-        <View style={styles1.modalContent}>
-          <TouchableOpacity style={styles1.closeButton} onPress={closeSlider}>
-            <Icon name="close"></Icon>
-          </TouchableOpacity>
-          <Swiper index={selectedImageIndex} loop={false} showsButtons={true}>
-            {images.map((image, index) => (
-              <View key={index} style={styles1.slide}>
-                <Image source={image} style={styles1.image}></Image>
+    <ScrollView>
+      <View style={{marginTop: 10}}>
+      {images && images.length > 0 ? (
+        <View style={styles.menuImageContainer}>
+          {isImagesLoading && (
+            <ActivityIndicator
+              size="large"
+              color="#0000ff"
+              style={styles.spinnerStyle}
+            />
+          )}
+          {images.map((image, index) => (
+            <TouchableOpacity key={index} onPress={() => openSlider(index)}>
+              <View
+                style={{
+                  width: windowWidth * 0.42,
+                  height: windowHeight * 0.15,
+                  marginBottom: windowHeight * 0.02,
+                }}
+              >
+                <Image source={image} style={styles.image} onLoad={onImageLoad} />
               </View>
-            ))}
-          </Swiper>
+            </TouchableOpacity>
+          ))}
+  
+          <Modal visible={isSliderVisible} transparent={true}>
+            <View style={styles1.modalContent}>
+              <TouchableOpacity style={styles1.closeButton} onPress={closeSlider}>
+                <Icon name="close"></Icon>
+              </TouchableOpacity>
+              <Swiper index={selectedImageIndex} loop={false} showsButtons={true}>
+                {images.map((image, index) => (
+                  <View key={index} style={styles1.slide}>
+                    <Image source={image} style={styles1.image}></Image>
+                  </View>
+                ))}
+              </Swiper>
+            </View>
+          </Modal>
         </View>
-      </Modal>
-    </View>
+      ) : (
+        <View style={styles.noMenuContainer}>
+          <Text style={styles.noMenuText}>No menu found</Text>
+        </View>
+      )}
+      </View>
+    </ScrollView>
   );
 }
 
@@ -477,15 +424,3 @@ const styles1 = StyleSheet.create({
     alignItems: "center",
   },
 });
-
-function EventsTabContent({ navigation }) {
-  return(
-    <ScrollView>
-      <View style={{marginTop: 10}}>
-        {Object.values(demoDataEvents).map((data) => (
-            <EventItem key={data.id} data={data} onPress={() => navigation.navigate('EventInfoScreen', { eventData: data })}/>
-        ))}
-      </View>
-      </ScrollView>
-  )
-}

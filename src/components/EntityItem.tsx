@@ -9,7 +9,6 @@ import EntityPriceInfoWidget from "./EntityPriceInfoWidget";
 import LocationInfoWidget from "../components/LocationInfoWidget";
 import { colors, windowHeight } from "../../AppStyles";
 
-import Restaurant from "../../assets/categoryRestaurantsBanner.jpg";
 
 const styles = StyleSheet.create({
     entitiesContainer: {
@@ -53,15 +52,11 @@ const styles = StyleSheet.create({
 
   export default function EntityItem({ data, onPress }) {
     
-    // const description = data.description;
-    // const length = 100;
-    // const trimmedDescription = description.substring(0, length);
-
     return (
       <Pressable onPress={onPress}>
         <View style={styles.entityItemContainer}>
           <View style={styles.entityItemContainer.imageContainer}>
-            <Image style={styles.banner} source={Restaurant}></Image>
+            <Image style={styles.banner} source={data.banner}></Image>
           </View>
           <View style={styles.entityItemContainer.contentContainer}>
             <View style={styles.entityItemContainer.contentContainer.titleContainer}>

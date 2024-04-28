@@ -17,8 +17,7 @@ import Header from "../components/Header";
 import EventItem from "../components/EventItem";
 import DatePicker from "../components/DatePicker";
 
-
-import { eventData } from "../services/apiClient";
+ import { eventsData } from "../data/eventsData";
 
 
 // const weekday = [
@@ -80,11 +79,11 @@ export default function EventsScreen({ navigation }) {
 
   const filterEventsByDate = () => {
     if(!selectedDate){
-      return Object.values((eventData))
+      return Object.values((eventsData))
     }
     
     const selectedDateString = selectedDate.toISOString().split('T')[0];
-    return Object.values(eventData).filter((event) => {
+    return Object.values(eventsData).filter((event) => {
       const eventDate = event.start_date.split('T')[0];
       return eventDate === selectedDateString;
     })
@@ -102,7 +101,7 @@ export default function EventsScreen({ navigation }) {
         <View style={styles.eventsContainer}>
           <View>
               {Object.values(filteredEvents).map((data) => (
-                <EventItem key={data.id} data={data} onPress={() => navigation.navigate('EventInfoScreen', { eventData: data })}/>
+                <EventItem key={data.id} data={data} onPress={() => navigation.navigate('EventInfoScreen', { eventsData: data })}/>
               ))}
             </View>
         </View>

@@ -101,24 +101,24 @@ const styles = StyleSheet.create({
 
 export default function EventInfoScreen({ route }){
 
-    const { eventData } = route.params;
+    const { eventsData } = route.params;
     return(
     <SafeAreaView style={_styles.safeAreaView}>
       <ScrollView style={{ padding: 14 }}>
-        <Header title={eventData.name}></Header>
+        <Header title={eventsData.name}></Header>
 
         <View style={styles.contentContainer}>
           <View style={styles.imageContainer}>
-            <Image style={styles.image} source={Event}></Image>
+            <Image style={styles.image} source={eventsData.banner}></Image>
             <View style={styles.widgetOverlayContainer}>
-                <DateInfoWidget start_date={eventData.start_date} end_date={eventData.end_date} marginRight={10}></DateInfoWidget>
-                <EventPriceInfoWidget ticket_price={eventData.ticket_price} marginRight={0}></EventPriceInfoWidget>  
+                <DateInfoWidget start_date={eventsData.start_date} end_date={eventsData.end_date} marginRight={10}></DateInfoWidget>
+                <EventPriceInfoWidget ticket_price={eventsData.ticket_price} marginRight={0}></EventPriceInfoWidget>  
             </View>
           </View>
         </View>
 
         <View style={styles.eventContentContainer}>
-              <OverviewTabContent data={eventData}></OverviewTabContent>
+              <OverviewTabContent data={eventsData}></OverviewTabContent>
         </View>
       </ScrollView>
     </SafeAreaView>

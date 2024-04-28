@@ -29,8 +29,9 @@ import OrganisationsBanner from "../../assets/categoryOrganisationsBanner.jpg";
 import RestaurantsBanner from "../../assets/categoryRestaurantsBanner.jpg";
 import Header from "../components/Header";
 
-import { eventData } from "../services/apiClient";
-import { entityData } from "../services/apiClient";
+import { eventsData } from "../data/eventsData";
+import { entitiesData } from "../data/entitiesData";
+
 
 const styles = StyleSheet.create({
   bodyContainer: {
@@ -62,17 +63,16 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   sliderItemContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "flex-start",
+    width: windowWidth / 2,
+    height: 170,
     marginRight: 10,
-    box: {
-      width: windowWidth / 2,
-      height: 150,
-      justifyContent: "center",
-      alignItems: "center",
+    image: {
+      height: "85%",
       borderRadius: 10,
       overflow: "hidden",
+    },
+    text:{
+      height: "15%"
     },
     title: {
       fontSize: 16,
@@ -165,8 +165,8 @@ const categoriesTitles: CategoriesTitles = {
 
 const categoriesFilter = {
   0: "restaurant",
-  1: "nightclub",
-  2: "bar",
+  1: "bar",
+  2: "nightclub",
   3: "hotel",
   4: "accommodation",
   5: "company",
@@ -202,97 +202,64 @@ const categoriesBannerImages = {
 const fuseOptions = {
   includeScore: true,
   keys: [
-    { name: 'name', weight: 0.6 },
-    { name: 'location', weight: 0.4 },
+    { name: 'name', weight: 0.5 },
+    { name: 'location', weight: 0.3 },
+    { name: 'description', weight: 0.2 },
+
     ],
   threshold: 0.4,
 };
 
-let fuse = new Fuse(entityData, fuseOptions);
 
 export default function DiscoverScreen({ navigation }) {
   
   const [searchQuery, setSearchQuery] = useState('');
-  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
-  const [searchResultsVisible, setSearchResultsVisible] = useState(false);
 
-  useEffect(() => {
-    const debouncedSetSearchQuery = debounce((query) => {
-      setDebouncedSearchQuery(query);
-    }, 10);
-
-    debouncedSetSearchQuery(searchQuery);
-
-    return () => debouncedSetSearchQuery.cancel();
-  }, [searchQuery]);
-
-  useEffect(() => {
-    if (!debouncedSearchQuery.trim()) {
+  const handleSearch = debounce((query) => {
+    if (!query.trim()) {
       setSearchResults([]);
       return;
     }
 
-    const results = fuse.search(debouncedSearchQuery).map(({item}) => item);
-
-    setSearchResults(results);
-  }, [debouncedSearchQuery]);
-
-  const resultsHeight = new Animated.Value(0);
-  const fadeAnim = React.useRef(new Animated.Value(1)).current;
+    const fuse = new Fuse(entitiesData, fuseOptions);
+    const results = fuse.search(query);
+    setSearchResults(results.map(({ item }) => item));
+  }, 300);
 
   useEffect(() => {
-    if (searchResults.length > 0) {
-      setSearchResultsVisible(true);
-      Animated.timing(resultsHeight, {
-        toValue: 100,
-        duration: 300,
-        useNativeDriver: false,
-      }).start();
-    } else {
-      setSearchResultsVisible(false);
-    }
-  }, [searchResults]);
-
-  const fadeOut = () => {
-    Animated.timing(fadeAnim, {
-      toValue: 0,
-      duration: 300,
-      useNativeDriver: true,
-    }).start(() => {
-      setSearchResultsVisible(false);
-    });
-  };
+    handleSearch(searchQuery);
+  }, [searchQuery]);
 
   const clearSearch = () => {
-    setSearchQuery('');
+    setSearchQuery("");
     setSearchResults([]);
-    setSearchResultsVisible(false);
   };
   
+
   function dataFilter(data, criterium){
     return data.filter((item) => item.category.includes(categoriesFilter[criterium]));
   }
 
   const getIconForCategory = (category) => {
     switch (category[0]) {
-      case 0:
+      case "restaurant":
         return <Icons.Icon_MI name="restaurant-menu" size={15} color="#000" />;
-      case 1:
+      case "bar":
         return <Icons.Icon_MI name="local-bar" size={15} color="#000" />;
-      case 2:
+      case "nightclub":
         return <Icons.Icon_MI name="music-note" size={15} color="#000" />;
-      case 3:
+      case "hotel":
         return <Icons.Icon_MI name="hotel" size={15} color="#000" />;
-      case 4:
+      case "accommodation":
         return <Icons.Icon_MCI name="hoop-house" size={15} color="#000" />;
-      case 5:
+      case "company":
         return <Icons.Icon_MI name="business-center" size={15} color="#000" />;
-      case 6:
+      case "doctor":
         return <Icons.Icon_MCI name="doctor" size={15} color="#000" />;
-      case 7:
+      case "association":
         return <Icons.Icon_MI name="group" size={15} color="#000" />;
-      case 8:
+      case "organisation":
         return <Icons.Icon_MI name="account-balance" size={15} color="#000" />;
       default:
         return null;
@@ -317,23 +284,32 @@ export default function DiscoverScreen({ navigation }) {
           />
           {searchQuery.length > 0 && (
             <View style={styles.searchBarContainer.icon}>
-              <Pressable onPress={() => {clearSearch(); fadeOut();}}>
+              <Pressable onPress={clearSearch}>
                 <Icons.Icon name="remove" size={20} color={colors.black}/>
               </Pressable>
             </View>
           )}
           </View>
-          {searchResultsVisible && (
-            <Animated.View style={{...styles.resultsContainer, opacity: fadeAnim }}>
-              <FlatList
-                data={searchResults}
-                nestedScrollEnabled={true}
-                keyExtractor={(item) => item.id}
-                renderItem={({ item }) => (
-                  <Pressable onPress={() => {navigation.navigate('EntityInfoScreen', { entityData: item})}}>
+          {searchResults.length > 0 ? (
+            <View style={styles.resultsContainer}>
+              <ScrollView nestedScrollEnabled={true}>
+                {searchResults.map((item) => (
+                  <Pressable
+                    key={item.id}
+                    onPress={() => {
+                      navigation.navigate('EntityInfoScreen', { entitiesData: item });
+                    }}
+                  >
                     <View style={styles.resultItem}>
                       <View style={styles.resultItemLogo}>
-                        <Image style={{...styles.resultItemLogo.image, width: windowWidth * .1, height: windowWidth * 0.1}} source={categoriesBannerImages[0]}></Image>
+                        <Image
+                          style={{
+                            ...styles.resultItemLogo.image,
+                            width: windowWidth * 0.1,
+                            height: windowWidth * 0.1,
+                          }}
+                          source={item.banner}
+                        />
                       </View>
                       <View style={styles.resultItemIcon}>
                         {getIconForCategory(item.category)}
@@ -346,16 +322,17 @@ export default function DiscoverScreen({ navigation }) {
                       </View>
                     </View>
                   </Pressable>
-                )}
-                ListEmptyComponent={() => (
-                  searchQuery.length > 0 && (
-                    <View style={{ alignItems: 'center', marginTop: 20 }}>
-                      <Text>No results found.</Text>
-                    </View>
-                  )
-                )}
-              />
-            </Animated.View>
+                ))}
+              </ScrollView>
+            </View>
+          ) : (
+            searchQuery.length > 0 && (
+              <View style={styles.resultsContainer}>
+                <View style={{ alignItems: 'center', marginTop: 20 }}>
+                  <Text>No results found.</Text>
+                </View>
+              </View>
+            )
           )}
 
           {/* CategoriesSlider */}
@@ -368,17 +345,16 @@ export default function DiscoverScreen({ navigation }) {
             Events in deiner Nähe
           </Text>
           <View>
-            <EventSectionSlider navigation={navigation} data={eventData}></EventSectionSlider>
+            <EventSectionSlider navigation={navigation} data={eventsData}></EventSectionSlider>
           </View>
 
           {/* Render all other sections for categories */}
           {Object.keys(sectionSliderCategories).map((key) => (
-            <SectionSliderWithHeading
+            <SectionSlider
               key={key}
               heading={categoriesTitles[key]}
-              data={dataFilter(entityData, key)}
+              data={dataFilter(entitiesData, key)}
               navigation={navigation}
-              categoryKey={key}
             />
           ))}
 
@@ -434,59 +410,63 @@ function EventSectionSlider({ data, navigation }) {
       style={styles.slider}
     >
       {Object.entries(data).map(([key, data], index) => (
-        <EventSectionSliderItem data={data} key={data.id} onPress={() => {navigation.navigate('EventInfoScreen', {eventData: data })}}/>
+        <EventSectionSliderItem data={data} key={data.id} onPress={() => {navigation.navigate('EventInfoScreen', {eventsData: data })}}/>
       ))}
     </ScrollView>
   );
 }
 
 function EventSectionSliderItem({ data, onPress }) {
-  const imageUrl = "https://via.placeholder.com/150";
   return (
     <Pressable onPress={onPress}>
       <View style={styles.sliderItemContainer}>
-        <View style={styles.sliderItemContainer.box}>
+        <View style={styles.sliderItemContainer.image}>
           <Image
-            source={{
-              uri: imageUrl,
-            }}
+            source={data.banner}
             style={{ width: "100%", height: "100%" }}
           />
         </View>
-        <Text style={styles.sliderItemContainer.title}>{data.name}</Text>
+        <View style={styles.sliderItemContainer.text}>
+          <Text numberOfLines={1} ellipsizeMode="tail" style={{...styles.sliderItemContainer.title }}>{data.name}</Text>
+        </View>
       </View>
     </Pressable>
   );
 }
 
-function SectionSliderWithHeading({ heading, data, navigation, categoryKey }) {
+function SectionSlider({ data, navigation, heading }) {
   return (
     <View>
       <Text style={{ ...styles.sectionTitle, marginTop: 10 }}>
-        {heading} in deiner Nähe
+          {heading} in deiner Nähe
       </Text>
       <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={styles.slider}
-      >
-        {data.map((item, index) => (
-          <Pressable onPress={() => navigation.navigate(categoryKey === 'events' ? 'EventInfoScreen' : 'EntityInfoScreen', { [categoryKey === 'events' ? 'eventData' : 'entityData']: item })} key={index}>
-            <View style={styles.sliderItemContainer}>
-              <View style={styles.sliderItemContainer.box}>
-                <Image
-                  source={{
-                    uri: item.imageUrl || 'https://via.placeholder.com/150', // Placeholder image URL
-                  }}
-                  style={{ width: "100%", height: "100%" }}
-                />
-              </View>
-              <Text numberOfLines={1} style={styles.sliderItemContainer.title}>{item.name}</Text>
-            </View>
-          </Pressable>
-        ))}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.slider}
+        >
+          {Object.entries(data).map(([key, data], index) => (
+            <SectionSliderItem data={data} key={data.id} onPress={() => {navigation.navigate('EntityInfoScreen', {entitiesData: data })}}/>
+          ))}
       </ScrollView>
     </View>
   );
 }
 
+function SectionSliderItem({ data, onPress }) {
+  return (
+    <Pressable onPress={onPress}>
+      <View style={styles.sliderItemContainer}>
+        <View style={styles.sliderItemContainer.image}>
+          <Image
+            source={data.banner}
+            style={{ width: "100%", height: "100%" }}
+          />
+        </View>
+        <View style={styles.sliderItemContainer.text}>
+          <Text numberOfLines={1} ellipsizeMode="tail" style={{...styles.sliderItemContainer.title }}>{data.name}</Text>
+        </View>
+      </View>
+    </Pressable>
+  );
+}

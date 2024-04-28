@@ -8,7 +8,6 @@ import {
 import { colors, windowHeight } from "../../AppStyles";
 import EventPriceInfoWidget from "./EventPriceInfoWidget";
 import DateInfoWidget from "../components/DateInfoWidget";
-import Event from "../../assets/event.jpeg";
 
 const styles = StyleSheet.create({
     eventItemContainer: {
@@ -52,7 +51,7 @@ export default function EventItem({ onPress, data }) {
       <Pressable onPress={onPress}>
         <View style={styles.eventItemContainer}>
           <View style={styles.eventItemContainer.imageContainer}>
-            <Image style={styles.banner} source={Event}></Image>
+            <Image style={styles.banner} source={data.banner}></Image>
           </View>
           <View style={styles.eventItemContainer.contentContainer}>
             <View style={styles.eventItemContainer.contentContainer.titleContainer}>

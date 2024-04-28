@@ -16,11 +16,11 @@ export default function Header({ title }) {
       <View style={styles.titleContainer}>
         <Text style={styles.titleContainer.title}>{title}</Text>
       </View>
-      <View style={styles.mapPinContainer}>
+      {/* <View style={styles.mapPinContainer}>
         <View style={styles.mapPinContainer.item}>
           <Icon style={colors.darkGrey} name="map" size={15}></Icon>
         </View>
-      </View>
+      </View> */}
     </View>
   );
 }
